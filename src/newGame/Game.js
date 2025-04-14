@@ -4,7 +4,6 @@ import './Game.css';
 
 function Game() {
     const [deck, setDeck] = useState(null);
-    const [drawCounter, setDrawCounter] = useState(1); // Set initial count to 1 to avoid drawing 0 cards initially
     const [cardInHand, setCardInHand] = useState([]);
 
     useEffect(() => {
@@ -20,8 +19,8 @@ function Game() {
             });
     }, []);
     const initDraw = () => {
-        if (deck && drawCounter > 0) {
-            fetch(`https://deckofcardsapi.com/api/deck/${deck.deck_id}/draw/?count=${drawCounter}`)
+        if (deck) {
+            fetch(`https://deckofcardsapi.com/api/deck/${deck.deck_id}/draw/?count=1`)
                 .then((response) => {
                     if (response.ok) {
                         return response.json();
@@ -50,10 +49,7 @@ function Game() {
             {deck ? <p>Remaining cards in deck: {deck.remaining}</p> : <p>Loading deck...</p>}
 
             <div>
-                <button onClick={() => setDrawCounter(prev => Math.max(0, prev - 1))}>-</button>
-                <input type="text" readOnly value={drawCounter} />
-                <button onClick={() => setDrawCounter(prev => prev + 1)}>+</button>
-                <button onClick={draw}>draw a card</button>
+                <button onClick={draw}>draw a card (hit)</button>
             </div>
 
             <div>
