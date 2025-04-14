@@ -19,15 +19,6 @@ function Game() {
             });
     }, []);
     const initDraw = () => {
-
-    }
-    const draw = () => {
-        console.log('draw a card')
-        initDraw()
-    }
-
-    useEffect(() => {
-        // Fetch the cards when drawCounter changes
         if (deck && drawCounter > 0) {
             fetch(`https://deckofcardsapi.com/api/deck/${deck.deck_id}/draw/?count=${drawCounter}`)
                 .then((response) => {
@@ -46,8 +37,11 @@ function Game() {
                     setDeck(data)
                 });
         }
-    }, [initDraw]); // Run when drawCounter or deck changes
-
+    }
+    const draw = () => {
+        console.log('draw a card')
+        initDraw()
+    }
 
     return (
         <div>
@@ -58,7 +52,7 @@ function Game() {
                 <button onClick={() => setDrawCounter(prev => Math.max(0, prev - 1))}>-</button>
                 <input type="text" readOnly value={drawCounter} />
                 <button onClick={() => setDrawCounter(prev => prev + 1)}>+</button>
-                <button onClick={draw()}>draw a card</button>
+                <button onClick={draw}>draw a card</button>
             </div>
 
             <div>
