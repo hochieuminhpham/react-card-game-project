@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import './Game.css';
 
 function Game() {
     const [deck, setDeck] = useState(null);
@@ -57,12 +58,14 @@ function Game() {
 
             <div>
                 <p>Cards in hand:</p>
-                {cardInHand.map((card, index) => (
-                    <div key={index}>
-                        <img src={card.image} alt={`${card.value} of ${card.suit}`} />
-                        <p>{card.value} of {card.suit}</p>
-                    </div>
-                ))}
+                <div className="card-container">
+                    {cardInHand.map((card, index) => (
+                        <div key={index}>
+                            <img src={card.image} alt={`${card.value} of ${card.suit}`} />
+                            <p>{card.value} of {card.suit}</p>
+                        </div>
+                    ))}
+                </div>
             </div>
 
             <Link to="/">Go Back Home</Link>
