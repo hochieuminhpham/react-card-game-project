@@ -4,6 +4,8 @@ import { hit } from "./Action.js";
 import { stand } from "./Action.js";
 import { double } from "./Action.js";
 import { dealDealerCards } from "./Dealer.js";
+import { calculateHandValue } from "./Count.js";
+import End from './End.js'; // Importiere die End-Komponente
 import './Game.css';
 
 function Game() {
@@ -12,8 +14,9 @@ function Game() {
     const [playerHand, setPlayerHand] = useState([]);
     const [dealerHand, setDealerHand] = useState([]);
     const [gameStarted, setGameStarted] = useState(false);
+    const [gameEnded, setGameEnded] = useState(false);
     const [playerTurn, setPlayerTurn] = useState(true);
-    const [dealerTurn, setDealerTurn] = useState(false); // Neuer State für den Dealer-Zug
+    const [dealerTurn, setDealerTurn] = useState(false);
 
     useEffect(() => {
         fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=5')
@@ -21,30 +24,32 @@ function Game() {
             .then((data) => {
                 setDeck(data);
             });
-    }, []);
+    }, [deck]);
 
     const startGame = () => {
         if (deck) {
             dealCards(deck, setDeck, setPlayerHand, setDealerHand, cardBackImage);
             setGameStarted(true);
-            setPlayerTurn(true);  // Spieler startet
+            setPlayerTurn(true);
+            setGameEnded(false); // Zurücksetzen der Spielbeendigung
         }
     };
 
-    // Funktion, die den Dealer handeln lässt
     const handleDealerTurn = () => {
-        if (!dealerTurn && !playerTurn) {  // Nur ausführen, wenn der Dealer noch nicht dran ist
-            setDealerTurn(true);  // Markiere den Dealer als "dran"
-            dealDealerCards(deck, dealerHand, setDealerHand, cardBackImage);  // Deal the cards
+        if (!dealerTurn && !playerTurn) {
+            setDealerTurn(true);
+            dealDealerCards(deck, dealerHand, setDealerHand, cardBackImage, setGameEnded);
         }
     };
 
-    // Sobald der Spieler auf "Stand" klickt, wird der Dealer aktiviert
     useEffect(() => {
         if (!playerTurn) {
-            handleDealerTurn();  // Dealer zieht seine Karten
+            handleDealerTurn();
         }
-    }, [playerTurn]);  // Effekt wird ausgeführt, wenn playerTurn auf false gesetzt wird
+    }, [playerTurn]);
+
+    const playerHandValue = calculateHandValue(playerHand);
+    const dealerHandValue = calculateHandValue(dealerHand);
 
     return (
         <div className="body-container">
@@ -55,6 +60,9 @@ function Game() {
                             <img key={index} src={card.image} alt={`${card.value} of ${card.suit}`} />
                         ))}
                     </div>
+                    {gameStarted && (
+                        <div className="hand-value">Dealer Hand: {dealerHandValue}</div>
+                    )}
                 </div>
                 <div className="player-container">
                     <div className="card-container">
@@ -62,6 +70,9 @@ function Game() {
                             <img key={index} src={card.image} alt={`${card.value} of ${card.suit}`} />
                         ))}
                     </div>
+                    {gameStarted && (
+                        <div className="hand-value">Spieler Hand: {playerHandValue}</div>
+                    )}
                 </div>
             </div>
             <div className="game-actions">
@@ -72,10 +83,24 @@ function Game() {
                         <button onClick={() => stand(setGameStarted, setPlayerTurn)} disabled={!playerTurn}>Stand</button>
                         <button onClick={() => hit(deck, setDeck, setPlayerHand)} disabled={!playerTurn}>Hit</button>
                         <button onClick={() => double(deck, setDeck, setPlayerHand, setGameStarted, setPlayerTurn)} disabled={!playerTurn}>Double</button>
-                        {/* <button onClick={() => console.log("Split")}>Split</button> */}
                     </>
                 )}
             </div>
+
+            {/* Zeige das Modal am Ende des Spiels */}
+            {gameEnded && (
+                <End 
+                    playerHand={playerHand} 
+                    dealerHand={dealerHand} 
+                    setGameStarted={setGameStarted}
+                    setDeck={setDeck}
+                    setPlayerHand={setPlayerHand}
+                    setDealerHand={setDealerHand}
+                    setPlayerTurn={setPlayerTurn}
+                    setDealerTurn={setDealerTurn}
+                    setGameEnded={setGameEnded} 
+                />
+            )}
         </div>
     );
 }
