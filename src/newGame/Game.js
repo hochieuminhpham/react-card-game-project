@@ -5,7 +5,7 @@ import { stand } from "./Action.js";
 import { double } from "./Action.js";
 import { dealDealerCards } from "./Dealer.js";
 import { calculateHandValue } from "./Count.js";
-import End from './End.js'; // Importiere die End-Komponente
+import End from './End.js';
 import './Game.css';
 
 function Game() {
@@ -31,7 +31,7 @@ function Game() {
             dealCards(deck, setDeck, setPlayerHand, setDealerHand, cardBackImage);
             setGameStarted(true);
             setPlayerTurn(true);
-            setGameEnded(false); // Zurücksetzen der Spielbeendigung
+            setGameEnded(false);
         }
     };
 
@@ -86,8 +86,6 @@ function Game() {
                     </>
                 )}
             </div>
-
-            {/* Zeige das Modal am Ende des Spiels */}
             {gameEnded && (
                 <End 
                     playerHand={playerHand} 
