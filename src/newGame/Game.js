@@ -1,70 +1,104 @@
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { dealCards } from "./Deal.js";
+import { hit } from "./Action.js";
+import { stand } from "./Action.js";
+import { double } from "./Action.js";
+import { dealDealerCards } from "./Dealer.js";
+import { calculateHandValue } from "./Count.js";
+import End from './End.js';
 import './Game.css';
 
 function Game() {
+    const cardBackImage = "https://deckofcardsapi.com/static/img/back.png";
     const [deck, setDeck] = useState(null);
-    const [cardInHand, setCardInHand] = useState([]);
+    const [playerHand, setPlayerHand] = useState([]);
+    const [dealerHand, setDealerHand] = useState([]);
+    const [gameStarted, setGameStarted] = useState(false);
+    const [gameEnded, setGameEnded] = useState(false);
+    const [playerTurn, setPlayerTurn] = useState(true);
+    const [dealerTurn, setDealerTurn] = useState(false);
 
     useEffect(() => {
-        // Fetch new shuffled deck on mount
-        fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                }
-            })
+        fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=5')
+            .then((res) => res.json())
             .then((data) => {
                 setDeck(data);
             });
-    }, []);
-    const initDraw = () => {
+    }, [deck]);
+
+    const startGame = () => {
         if (deck) {
-            fetch(`https://deckofcardsapi.com/api/deck/${deck.deck_id}/draw/?count=1`)
-                .then((response) => {
-                    if (response.ok) {
-                        return response.json();
-                    }
-                })
-                .then((data) => {
-                    const filteredCards = data.cards.map(card => ({
-                        code: card.code,
-                        image: card.image,
-                        value: card.value,
-                        suit: card.suit
-                    }));
-                    setCardInHand(prev => [...prev, ...filteredCards]);// Spread to add new cards to the hand
-                    setDeck(data)
-                });
+            dealCards(deck, setDeck, setPlayerHand, setDealerHand, cardBackImage);
+            setGameStarted(true);
+            setPlayerTurn(true);
+            setGameEnded(false);
         }
-    }
-    const draw = () => {
-        console.log('draw a card')
-        initDraw()
-    }
+    };
+
+    const handleDealerTurn = () => {
+        if (!dealerTurn && !playerTurn) {
+            setDealerTurn(true);
+            dealDealerCards(deck, dealerHand, setDealerHand, cardBackImage, setGameEnded);
+        }
+    };
+
+    useEffect(() => {
+        if (!playerTurn) {
+            handleDealerTurn();
+        }
+    }, [playerTurn]);
+
+    const playerHandValue = calculateHandValue(playerHand);
+    const dealerHandValue = calculateHandValue(dealerHand);
 
     return (
-        <div>
-            <h1>Welcome to Black Jack</h1>
-            {deck ? <p>Remaining cards in deck: {deck.remaining}</p> : <p>Loading deck...</p>}
-
-            <div>
-                <button onClick={draw}>draw a card (hit)</button>
-            </div>
-
-            <div>
-                <p>Cards in hand:</p>
-                <div className="card-container">
-                    {cardInHand.map((card, index) => (
-                        <div key={index}>
-                            <img src={card.image} alt={`${card.value} of ${card.suit}`} />
-                            <p>{card.value} of {card.suit}</p>
-                        </div>
-                    ))}
+        <div className="body-container">
+            <div className="game-container">
+                <div className="dealer-container">
+                    <div className="card-container">
+                        {dealerHand.map((card, index) => (
+                            <img key={index} src={card.image} alt={`${card.value} of ${card.suit}`} />
+                        ))}
+                    </div>
+                    {gameStarted && (
+                        <div className="hand-value">Dealer Hand: {dealerHandValue}</div>
+                    )}
+                </div>
+                <div className="player-container">
+                    <div className="card-container">
+                        {playerHand.map((card, index) => (
+                            <img key={index} src={card.image} alt={`${card.value} of ${card.suit}`} />
+                        ))}
+                    </div>
+                    {gameStarted && (
+                        <div className="hand-value">Spieler Hand: {playerHandValue}</div>
+                    )}
                 </div>
             </div>
-
-            <Link to="/">Go Back Home</Link>
+            <div className="game-actions">
+                {!gameStarted ? (
+                    <button onClick={startGame}>Start Game</button>
+                ) : (
+                    <>
+                        <button onClick={() => stand(setGameStarted, setPlayerTurn)} disabled={!playerTurn}>Stand</button>
+                        <button onClick={() => hit(deck, setDeck, setPlayerHand)} disabled={!playerTurn}>Hit</button>
+                        <button onClick={() => double(deck, setDeck, setPlayerHand, setGameStarted, setPlayerTurn)} disabled={!playerTurn}>Double</button>
+                    </>
+                )}
+            </div>
+            {gameEnded && (
+                <End 
+                    playerHand={playerHand} 
+                    dealerHand={dealerHand} 
+                    setGameStarted={setGameStarted}
+                    setDeck={setDeck}
+                    setPlayerHand={setPlayerHand}
+                    setDealerHand={setDealerHand}
+                    setPlayerTurn={setPlayerTurn}
+                    setDealerTurn={setDealerTurn}
+                    setGameEnded={setGameEnded} 
+                />
+            )}
         </div>
     );
 }
