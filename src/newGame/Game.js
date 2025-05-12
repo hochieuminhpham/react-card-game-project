@@ -57,7 +57,7 @@ function Game() {
                 <div className="dealer-container">
                     <div className="card-container">
                         {dealerHand.map((card, index) => (
-                            <img key={index} src={card.image} alt={`${card.value} of ${card.suit}`} />
+                            <img className={"card-animate"} key={index} src={card.image} alt={`${card.value} of ${card.suit}`} />
                         ))}
                     </div>
                     {gameStarted && (
@@ -67,7 +67,7 @@ function Game() {
                 <div className="player-container">
                     <div className="card-container">
                         {playerHand.map((card, index) => (
-                            <img key={index} src={card.image} alt={`${card.value} of ${card.suit}`} />
+                            <img className={"card-animate"} key={index} src={card.image} alt={`${card.value} of ${card.suit}`} />
                         ))}
                     </div>
                     {gameStarted && (
