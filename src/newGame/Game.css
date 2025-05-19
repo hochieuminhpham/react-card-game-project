@@ -83,6 +83,10 @@
   animation: fadeInUp 0.5s ease;
 }
 
+.hand-value {
+  margin: 8px;
+}
+
 
 .game-actions button:hover {
   transform: scale(1.05);
