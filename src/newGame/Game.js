@@ -57,7 +57,16 @@ function Game() {
                 <div className="dealer-container">
                     <div className="card-container">
                         {dealerHand.map((card, index) => (
-                            <img className={"card-animate"} key={index} src={card.image} alt={`${card.value} of ${card.suit}`} />
+                            <div className="hand-card-container" key={index}>
+                                <div className="card-wrapper">
+                                    <img className="card-image" src={card.image} alt={`${card.value} of ${card.suit}`} />
+                                    {card.suit !== "HIDDEN" && (
+                                        <div className="card-info">
+                                            <h3>{card.suit}</h3>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
                         ))}
                     </div>
                     {gameStarted && (
@@ -67,7 +76,16 @@ function Game() {
                 <div className="player-container">
                     <div className="card-container">
                         {playerHand.map((card, index) => (
-                            <img className={"card-animate"} key={index} src={card.image} alt={`${card.value} of ${card.suit}`} />
+                            <div className="hand-card-container" key={index}>
+                                <div className="card-wrapper">
+                                    <img className="card-image" src={card.image} alt={`${card.value} of ${card.suit}`} />
+                                    {card.suit !== "HIDDEN" && (
+                                        <div className="card-info">
+                                            <h3>{card.suit}</h3>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
                         ))}
                     </div>
                     {gameStarted && (
