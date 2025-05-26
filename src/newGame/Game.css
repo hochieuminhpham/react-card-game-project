@@ -1,29 +1,15 @@
-.card-container {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
+
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
+
 .body-container {
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
-}
-.game-actions {
-  border-top: 1px solid #333;
-  width: 100%;
-  height: 7rem;
-  background-color: #1a1a1a; /* Matt-schwarz */
-  margin-top: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  /* box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.5); */
 }
 
 .game-container {
@@ -31,6 +17,7 @@
   display: flex;
   flex-direction: column;
 }
+
 .dealer-container,
 .player-container {
   width: 100%;
@@ -39,19 +26,33 @@
   justify-content: center;
   align-items: center;
 }
+
 .player-container {
   margin-top: auto;
 }
 
-@keyframes fadeSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.card-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hand-value {
+  margin: 8px;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.game-actions {
+  border-top: 1px solid #333;
+  width: 100%;
+  height: 7rem;
+  background-color: #1a1a1a;
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
 
 .game-actions button {
@@ -64,9 +65,63 @@
   font-size: 1.3rem;
   font-weight: bold;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-  transition: transform 0.1s ease;
-  animation: fadeSlideIn 0.5s ease-out;
+  transition: transform 0.2s ease;
+  animation: fadeInUp 0.4s ease-out;
+  cursor: pointer;
 }
+
+.game-actions button:hover {
+  transform: scale(1.05);
+  background-color: #fff;
+}
+
+.card-wrapper {
+  position: relative;
+  animation: fadeInUp 0.5s ease both;
+  transition: transform 0.3s ease;
+}
+
+.card-wrapper:hover {
+  transform: translateY(-10px);
+}
+
+.card-image {
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  width: 150px;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.card-info {
+  position: absolute;
+  bottom: -2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #222;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  opacity: 0;
+  transition: opacity 0.3s ease, bottom 0.3s ease;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.card-wrapper:hover .card-info {
+  opacity: 1;
+  bottom: -3.5rem;
+}
+
+
+.hand-card-container {
+  display: flex;
+  align-items: flex-end;
+  position: relative;
+}
+
 
 @keyframes fadeInUp {
   0% {
@@ -79,21 +134,13 @@
   }
 }
 
-.card-animate {
-  animation: fadeInUp 0.5s ease;
-}
-
-.hand-value {
-  margin: 8px;
-}
-
-
-.game-actions button:hover {
-  transform: scale(1.05);
-  background-color: #fff;
-}
-
-.card-container img {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  border-radius: 8px;
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
