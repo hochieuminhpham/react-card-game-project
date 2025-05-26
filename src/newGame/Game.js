@@ -63,6 +63,14 @@ function Game() {
                                     {card.suit !== "HIDDEN" && (
                                         <div className="card-info">
                                             <h3>{card.suit}</h3>
+                                            <h3>
+                                                {["KING", "QUEEN", "JACK"].includes(card.value)
+                                                    ? 10
+                                                    : card.value === "ACE"
+                                                        ? "ACE: 11"
+                                                        : card.value}
+                                            </h3>
+
                                         </div>
                                     )}
                                 </div>
@@ -82,6 +90,14 @@ function Game() {
                                     {card.suit !== "HIDDEN" && (
                                         <div className="card-info">
                                             <h3>{card.suit}</h3>
+                                            <h3>
+                                                {["KING", "QUEEN", "JACK"].includes(card.value)
+                                                    ? 10
+                                                    : card.value === "ACE"
+                                                        ? "ACE: 11"
+                                                        : card.value}
+                                            </h3>
+
                                         </div>
                                     )}
                                 </div>
