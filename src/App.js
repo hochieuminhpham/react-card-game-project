@@ -14,7 +14,7 @@ function Home() {
         <div className="Homepage-container">
             <div className="title">Blackjack</div>
             <div className="navigation">
-                <button onClick={handlePlay}>Play</button>
+                <button onClick={handlePlay} id={"homepage-play-button"}>Play</button>
             </div>
         </div>
     );
