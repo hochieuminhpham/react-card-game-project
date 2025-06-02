@@ -39,3 +39,7 @@
 .modal-content button:hover {
   background-color: #45a049;
 }
+
+button {
+  margin: 5px;
+}
