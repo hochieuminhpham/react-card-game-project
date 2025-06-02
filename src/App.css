@@ -89,4 +89,12 @@ div .buttons {
   color: white;
 }
 
-
+#logo {
+  width: 300px;
+  height: 300px;
+  borderRadius: 15px;
+  boxShadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  display: block;
+  margin: auto;
+  border: #640d0d;
+}

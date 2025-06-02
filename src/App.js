@@ -13,6 +13,7 @@ function Home() {
     return (
         <div className="Homepage-container">
             <div className="title">Blackjack</div>
+            <img id="logo" src="/BlackJack.png" alt="Logo" />
             <div className="navigation">
                 <button onClick={handlePlay} id={"homepage-play-button"}>Play</button>
             </div>
