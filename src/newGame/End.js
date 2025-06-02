@@ -1,7 +1,10 @@
 import React from 'react';
 import './End.css';
+import {useNavigate} from "react-router-dom";
+
 
 const End = ({ playerHand, dealerHand, setGameStarted, setDeck, setPlayerHand, setDealerHand, setPlayerTurn, setDealerTurn, setGameEnded }) => {
+    const navigate = useNavigate();
     const calculateHandValue = (hand) => {
         let totalValue = 0;
         let acesCount = 0;
@@ -53,14 +56,19 @@ const End = ({ playerHand, dealerHand, setGameStarted, setDeck, setPlayerHand, s
         setDeck(null);
         setPlayerTurn(true); 
         setDealerTurn(false); 
-        setGameEnded(false); 
+        setGameEnded(false);
+        navigate("/setBet");
     };
+    const quit = () => {
+        navigate("/")
+    }
 
     return (
         <div className="modal">
             <div className="modal-content">
                 <h2>{gameResult}</h2>
                 <button onClick={restartGame}>Neustart</button>
+                <button onClick={quit}>Zurück zu Homepage</button>
             </div>
         </div>
     );
