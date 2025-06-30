@@ -8,7 +8,7 @@ import { calculateHandValue } from "./Count.js";
 import End from './End.js';
 import './Game.css';
 
-function Game() {
+function Game({ currentBet, balance, setBalance }) {
     const cardBackImage = "https://deckofcardsapi.com/static/img/back.png";
     const [deck, setDeck] = useState(null);
     const [playerHand, setPlayerHand] = useState([]);
@@ -121,16 +121,18 @@ function Game() {
                 )}
             </div>
             {gameEnded && (
-                <End 
-                    playerHand={playerHand} 
-                    dealerHand={dealerHand} 
+                <End
+                    playerHand={playerHand}
+                    dealerHand={dealerHand}
                     setGameStarted={setGameStarted}
                     setDeck={setDeck}
                     setPlayerHand={setPlayerHand}
                     setDealerHand={setDealerHand}
                     setPlayerTurn={setPlayerTurn}
                     setDealerTurn={setDealerTurn}
-                    setGameEnded={setGameEnded} 
+                    setGameEnded={setGameEnded}
+                    currentBet={currentBet}
+                    setBalance={setBalance}
                 />
             )}
         </div>
