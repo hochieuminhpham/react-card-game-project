@@ -46,15 +46,15 @@ const End = ({
     useEffect(() => {
         let result = "";
         if (playerHandValue > 21) {
-            result = "Bust";
+            result = "Bust -"  +currentBet;
         } else if (dealerHandValue > 21) {
             setBalance(prev => prev + currentBet * 2);
-            result = "Gewonnen! Der Dealer hat Bust";
+            result = "Gewonnen! Der Dealer hat Bust +"+ (currentBet * 2);
         } else if (playerHandValue > dealerHandValue) {
             setBalance(prev => prev + currentBet * 2);
-            result = "Gewonnen!";
+            result = "Gewonnen! +" + (currentBet * 2);
         } else if (playerHandValue < dealerHandValue) {
-            result = "Verloren!";
+            result = "Verloren! -" +currentBet ;
         } else {
             setBalance(prev => prev + currentBet);
             result = "Push!";
