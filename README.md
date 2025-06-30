@@ -30,4 +30,5 @@ M: mit Issue #22 und #21 dran -> wird eine Version online stellen Azure
 G: mit Issue #23 dran
 
 23.6.2025
+
 30.6.2025
