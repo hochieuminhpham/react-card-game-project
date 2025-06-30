@@ -1,72 +1,86 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './End.css';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-
-const End = ({ playerHand, dealerHand, setGameStarted, setDeck, setPlayerHand, setDealerHand, setPlayerTurn, setDealerTurn, setGameEnded }) => {
+const End = ({
+                 playerHand,
+                 dealerHand,
+                 setGameStarted,
+                 setDeck,
+                 setPlayerHand,
+                 setDealerHand,
+                 setPlayerTurn,
+                 setDealerTurn,
+                 setGameEnded,
+                 currentBet,
+                 setBalance
+             }) => {
     const navigate = useNavigate();
+    const [resultText, setResultText] = useState("");
+
     const calculateHandValue = (hand) => {
         let totalValue = 0;
         let acesCount = 0;
-
         hand.forEach((card) => {
             if (card && card.value !== "HIDDEN") {
                 if (card.value === "ACE") {
                     acesCount += 1;
                     totalValue += 11;
                 } else if (["KING", "QUEEN", "JACK"].includes(card.value)) {
-                    totalValue += 10; 
+                    totalValue += 10;
                 } else {
                     totalValue += parseInt(card.value, 10);
                 }
             }
         });
-
         while (totalValue > 21 && acesCount > 0) {
             totalValue -= 10;
             acesCount -= 1;
         }
-
         return totalValue;
     };
 
     const playerHandValue = calculateHandValue(playerHand);
     const dealerHandValue = calculateHandValue(dealerHand);
 
-    const determineResult = () => {
+    useEffect(() => {
+        let result = "";
         if (playerHandValue > 21) {
-            return "Bust";
+            result = "Bust";
         } else if (dealerHandValue > 21) {
-            return "Gewonnen! Der Dealer hat Bust";
+            setBalance(prev => prev + currentBet * 2);
+            result = "Gewonnen! Der Dealer hat Bust";
         } else if (playerHandValue > dealerHandValue) {
-            return "Gewonnen!";
+            setBalance(prev => prev + currentBet * 2);
+            result = "Gewonnen!";
         } else if (playerHandValue < dealerHandValue) {
-            return "Verloren!";
+            result = "Verloren!";
         } else {
-            return "Push!";
+            setBalance(prev => prev + currentBet);
+            result = "Push!";
         }
-    };
-
-    const gameResult = determineResult();
+        setResultText(result);
+    }, []); // Only runs once when component mounts
 
     const restartGame = () => {
-        setGameStarted(false); 
-        setPlayerHand([]); 
-        setDealerHand([]); 
+        setGameStarted(false);
+        setPlayerHand([]);
+        setDealerHand([]);
         setDeck(null);
-        setPlayerTurn(true); 
-        setDealerTurn(false); 
+        setPlayerTurn(true);
+        setDealerTurn(false);
         setGameEnded(false);
         navigate("/setBet");
     };
+
     const quit = () => {
-        navigate("/")
-    }
+        navigate("/");
+    };
 
     return (
         <div className="modal">
             <div className="modal-content">
-                <h2>{gameResult}</h2>
+                <h2>{resultText}</h2>
                 <button onClick={restartGame}>Neustart</button>
                 <button onClick={quit}>Zurück zu Homepage</button>
             </div>

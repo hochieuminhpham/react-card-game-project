@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import Game from "./newGame/Game.js";
@@ -34,6 +34,7 @@ function SetBet({ balance, setBalance, setCurrentBet }) {
         }
         setCurrentBet(amount);
         setBalance((prev) => prev - amount);
+        document.cookie = "amount="+amount;
         navigate("/newGame"); // Hier wird dann auf newGame weitergeleitet
     };
 
@@ -45,6 +46,7 @@ function SetBet({ balance, setBalance, setCurrentBet }) {
         }
         setCurrentBet(value);
         setBalance((prev) => prev - value);
+        document.cookie = "amount="+value;
         navigate("/newGame"); // Weiterleitung zur neuen Spielseite
     };
 
@@ -75,7 +77,15 @@ function SetBet({ balance, setBalance, setCurrentBet }) {
         </div>
     );
 }
-
+function getAmount(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+        const rawValue = parts.pop().split(';').shift();
+        return parseInt(rawValue, 10); // base 10
+    }
+    return 0;
+}
 function App() {
     const [balance, setBalance] = useState(1000); // Startguthaben
     const [currentBet, setCurrentBet] = useState(0); // Aktueller Einsatz
@@ -88,15 +98,17 @@ function App() {
                     path="/setBet"
                     element={
                         <SetBet
-                            balance={balance}
-                            setBalance={setBalance}
+                            balance={balance + getAmount("win")}
+                            setBalance={(newBal) => {
+                                setBalance(newBal);
+                            }}
                             setCurrentBet={setCurrentBet}
                         />
                     }
                 />
                 <Route
                     path="/newGame"
-                    element={<Game currentBet={currentBet} balance={balance} />}
+                    element={<Game currentBet={currentBet} balance={balance} setBalance={setBalance} />}
                 />
             </Routes>
         </Router>
