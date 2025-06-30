@@ -6,6 +6,9 @@ https://reactcardgame-cpg2dhhecphkawa7.eastus-01.azurewebsites.net/
 Version 2.0
 https://blackjack20-fabzhmgda6drbnh2.eastus-01.azurewebsites.net/
 
+Version 3.0
+https://blackjack30-gehqfxbjf4bweabw.eastus-01.azurewebsites.net/
+
 -------------------------------------------------------
 
 
