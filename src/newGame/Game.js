@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { dealCards } from "./Deal.js";
-import { hit } from "./Action.js";
-import { stand } from "./Action.js";
-import { double } from "./Action.js";
+import { hit, stand, double } from "./Action.js";
 import { dealDealerCards } from "./Dealer.js";
 import { calculateHandValue } from "./Count.js";
 import End from './End.js';
