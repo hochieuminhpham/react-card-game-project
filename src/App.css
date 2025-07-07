@@ -98,3 +98,27 @@ div .buttons {
   margin: auto;
   border: #640d0d;
 }
+
+.error {
+  color: #d8000c;
+  background-color: #ffbaba;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #d8000c;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.balance {
+  color: #2e7d32;
+  background-color: #e8f5e9;
+  padding: 12px 16px;
+  border: 1px solid #c8e6c9;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  width: fit-content;
+  margin: 10px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
